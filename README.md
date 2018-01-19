@@ -161,10 +161,10 @@ class App extends React.Component {
   render () {
     return (
       <div>
-      // pass the form the function
-      <Form addUser={this.addUser} />
-      // pass the list the users
-      <CardList users={this.state.users} />
+        // pass the form the function
+        <Form addUser={this.addUser} />
+        // pass the list the users
+        <CardList users={this.state.users} />
       </div>
     )
   }
