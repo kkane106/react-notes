@@ -86,11 +86,11 @@ ReactDOM.render(<App />, mountNode);
 ```js
 // Presentation Detail Component
 const Card = (props) => {
-	return (
-  	<div>
-    	<img width="75" src={props.user.avatar_url} />
+  return (
+    <div>
+      <img width="75" src={props.user.avatar_url} />
       <div className="info">
-      	<div>{props.user.login}</div>
+        <div>{props.user.login}</div>
         <div>{props.user.company}</div>
       </div>
     </div>
@@ -99,12 +99,10 @@ const Card = (props) => {
 
 // Presentation List Component
 const CardList = (props) => {
-	return (
-  	<div>
-  		{
-        // React (like angular) wants unique identifiers("key") for each component
-      	props.users.map(user => <Card key={user.id} user={user} />)
-        }
+  return (
+    <div>
+      // React (like angular) wants unique identifiers("key") for each component
+      {props.users.map(user => <Card key={user.id} user={user} />)}
     </div>
   );
 }
@@ -112,29 +110,31 @@ const CardList = (props) => {
 // Sibling to list, uses function provided by parent to update list
 class Form extends React.Component {
   // set initial state
-	state = {
-  	username : ''
+  state = {
+    username : ''
   }
 
   // call back for form submition
-	handleSubmit = (event) => {
-  	event.preventDefault();
-    // make async request to api with user input
-    // NOTE: axios uses the Promise API (sweet)
-    axios
-      .get(`https://api.github.com/users/${this.state.username}`)
-      .then((res) => {
-        // pass response data to parent via function binding
-        this.props.addUser(res.data)
-        // reset initial state
-        this.state.username = ""
-      })
+  handleSubmit = (event) => {
+    event.preventDefault();
+      // make async request to api with user input
+      // NOTE: axios uses the Promise API (sweet)
+      axios
+        .get(`https://api.github.com/users/${this.state.username}`)
+        .then((res) => {
+          // pass response data to parent via function binding
+          this.props.addUser(res.data)
+          // reset initial state
+          this.state.username = ""
+        })
   };
 
-	render() {
-  	return (
-    	<form onSubmit={this.handleSubmit}>
-      	<input type="text" value={this.state.username} onChange={(event)=> this.setState({username : event.target.value})} placeholder="Github Username" />
+  render() {
+    return (
+      <form onSubmit={this.handleSubmit}>
+        <input type="text" value={this.state.username}
+          onChange={(event)=> this.setState({username : event.target.value})}
+          placeholder="Github Username" />
         <button type="submit">Add Card</button>
       </form>
     )
@@ -144,27 +144,27 @@ class Form extends React.Component {
 // App Component
 class App extends React.Component {
   // setting initial state
-	state = {
-  	users : []
+  state = {
+    users : []
   }
 
   // function to bind to child component
   addUser = (user) => {
     // deal asynchronously with state to avoid race condition
-  	this.setState((prevState) => {
-    	return {
-      	users : prevState.users.concat(user)
+    this.setState((prevState) => {
+      return {
+        users : prevState.users.concat(user)
       }
     })
   }
 
-	render () {
-  	return (
-    	<div>
-        // pass the form the function
-      	<Form addUser={this.addUser} />
-        // pass the list the users
-    		<CardList users={this.state.users} />
+  render () {
+    return (
+      <div>
+      // pass the form the function
+      <Form addUser={this.addUser} />
+      // pass the list the users
+      <CardList users={this.state.users} />
       </div>
     )
   }
